@@ -20,7 +20,7 @@ class Game {
 
     this.scoreLeft=0;
     this.scoreRight=0;
-
+    this.speed=10;
   }
 
   run() {
@@ -67,9 +67,17 @@ class Game {
     })*/
     //const col = this.pelota.collide(this.rectanguloDer) || this.pelota.collide(this.rectanguloIzq);
     if(this.pelota.collide(this.rectanguloDer)){
-      this.pelota.cambiarDireccion(-3);
+      debugger;
+      if(this.speed<10){
+        this.pelota.setSpeed(this.pelota.getSpeed()-this.speed);
+        this.speed++;
+      }
+
     }else if(this.pelota.collide(this.rectanguloIzq)){
-      this.pelota.cambiarDireccion(3);
+      if(this.speed<10){
+        this.pelota.setSpeed(this.pelota.getSpeed()+this.speed);
+        this.speed++;
+      }
     }
 
     if(this.pelota.collideRight()){

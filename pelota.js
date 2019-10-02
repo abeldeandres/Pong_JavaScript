@@ -27,11 +27,12 @@ class Pelota {
   collide(el) {
     const colX = el.x + el.w > this.x && el.x < this.x + this.w
     const colY = el.y + el.h > this.y && el.y < this.y + this.h
-
+    debugger;
     return colX && colY
   }
 
   collideRight(){
+    debugger;
     const colX = this.x < 0;
     return colX;
   }
@@ -41,8 +42,12 @@ class Pelota {
       return colX;
   }
 
-  cambiarDireccion(velocidad){
+  setSpeed(velocidad){
     this.vx=velocidad;
+  }
+
+  getSpeed(){
+    return this.vx;
   }
 
 
