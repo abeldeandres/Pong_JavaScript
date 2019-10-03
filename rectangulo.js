@@ -1,16 +1,12 @@
 
-
 class Rectangulo {
   constructor(ctx,x,y) {
     this.ctx = ctx
-    //this.y = 243
+    this.x = x;
+    this.y = y;
     this.w = 20
-    this.h = 40
-    //this.x = this.ctx.canvas.width
-    this.x=x;
-    this.y=y;
-
-
+    this.h = 60
+    
     this.vy = 0;
 
   }
@@ -18,7 +14,6 @@ class Rectangulo {
   draw() {
     this.ctx.beginPath();
     this.ctx.fillRect(this.x, this.y, this.w, this.h);
-    //this.ctx.stroke();
     this.ctx.closePath()
   }
 
@@ -29,7 +24,7 @@ class Rectangulo {
   }
 
   aumentarVelocidad(velocidad){
-    this.vy=velocidad;
+    this.vy = velocidad;
   }
 
 

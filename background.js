@@ -10,18 +10,14 @@ class Background {
 
 
   }
-
+ 
   draw() {
     // start the path
     ctx.beginPath();
-    // starting position is x=50, y=50
-    ctx.moveTo(250, 0);
-    // draw the line that has final coordinates x=250, y=50
-
-    ctx.lineTo(250, 300);
+    ctx.moveTo(this.w/2, 0);
+    ctx.lineTo(this.w/2, this.h);
     ctx.strokeStyle = "#FF0000";
     ctx.stroke();
-    ctx.closePath();
   }
 
 }
