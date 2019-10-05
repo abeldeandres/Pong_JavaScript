@@ -8,7 +8,6 @@ class Pelota {
     this.r=9;
 
 
-
     //PROBANDO SALIDA INICIAL DE LA PELOTA
     this.vx = (Math.random() < 0.5 ? -1 : 1) * (Math.random() + 5)
     this.vy = (Math.random() * 4) * (Math.random() < 0.5 ? -1 : 1)
@@ -30,10 +29,15 @@ class Pelota {
   }
 
   collide(el) {
+  
     const colX = el.x + el.w > this.x - this.r && el.x < this.x + this.r
     const colY = el.y + el.h > this.y && el.y < this.y
 
     return colX && colY
+  }
+
+  collidePalaLeft(el) {
+
   }
 
   
@@ -70,6 +74,26 @@ class Pelota {
 
   aumentarVelocidad(vel) {
     this.vx += vel
+  }
+
+  getVelocidadActual() {
+    this.vx
+  }
+
+  golpeoPalaSecciones (el) {
+    if (el.y < this.y && this.y < el.y + 29) {
+      debugger;
+      if (this.vy >= 0) {
+        this.vy *= -1
+      }
+    } else if (el.y + 30 < this.y && this.y < el.y + 60) {
+        debugger;
+        if (this.vy <= 0) {
+        this.vy *= -1
+        }
+    }
+    //alert("velocidad YP " + this.vy + "///Y de pelota/// " + this.y + " Y del rectancgulo  " + el.y) 
+    
   }
 
 }

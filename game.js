@@ -90,12 +90,16 @@ class Game {
 
   _checkCollisions() {
     
-    if(this.pelota.collide(this.rectanguloDer || this.rectanguloDer + 500)){ //--------->PARA LA ACELARACION
+    if(this.pelota.collide(this.rectanguloDer)){ 
+      this.pelota.golpeoPalaSecciones(this.rectanguloDer);
       this.pelota.cambiarDireccionX(-5);
       this.pelota.aumentarVelocidad(-3)
-    }else if(this.pelota.collide(this.rectanguloIzq || this.rectanguloIzq - 500)){ //-----------> PARA LA ACELARACION
+      
+    }else if(this.pelota.collide(this.rectanguloIzq)){
+      this.pelota.golpeoPalaSecciones(this.rectanguloIzq);
       this.pelota.cambiarDireccionX(5);
       this.pelota.aumentarVelocidad(3)
+      
     }
 
     if(this.pelota.collideTop()) {
@@ -162,8 +166,6 @@ class Game {
     } else if (this.scoreRight >= 11 && this.scoreRight - this.scoreLeft > 1) {
       clearInterval(this.intervalId);
       this.printLeftPlayerWins();
-      
-    
     }
   }
 
