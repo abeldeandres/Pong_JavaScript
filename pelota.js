@@ -5,7 +5,7 @@ class Pelota {
     this.h = 40
     this.x= this.ctx.canvas.width/2;
     this.y= this.ctx.canvas.height/2;
-    this.r=10;
+    this.r=9;
 
 
 
@@ -15,12 +15,11 @@ class Pelota {
   }
 
   draw() {
-  
-      console.log('entra')
-      this.ctx.beginPath();
-      this.ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
-      this.ctx.fill();
-    
+    this.ctx.beginPath();
+    this.ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
+    this.ctx.fill();
+    this.ctx.fillStyle = "black"
+    //this.ctx.strokeStyle = "red"
     //this.ctx.stroke();
     //this.ctx.closePath()
   }
@@ -31,7 +30,7 @@ class Pelota {
   }
 
   collide(el) {
-    const colX = el.x + el.w > this.x - 2 && el.x < this.x + 2
+    const colX = el.x + el.w > this.x - this.r && el.x < this.x + this.r
     const colY = el.y + el.h > this.y && el.y < this.y
 
     return colX && colY
@@ -73,9 +72,4 @@ class Pelota {
     this.vx += vel
   }
 
-
-  iniciarPelota(){
-    this.x=250;
-    this.y=150;
-  }
 }

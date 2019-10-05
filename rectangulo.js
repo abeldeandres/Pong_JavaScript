@@ -14,6 +14,7 @@ class Rectangulo {
   draw() {
     this.ctx.beginPath();
     this.ctx.fillRect(this.x, this.y, this.w, this.h);
+    this.ctx.fillStyle = "green"
     this.ctx.closePath()
   }
 

@@ -3,7 +3,6 @@ const DOWN_KEY = 40;
 const W_KEY=87;
 const S_KEY=83;
 const PAUSA = 32;
-//let countDown = (this.scoreLeft>0 || this.scoreRight>0) ? 1000: 3000
 
 let pause = false
 
@@ -19,8 +18,6 @@ class Game {
     this.rectanguloDer= new Rectangulo(this.ctx,this.ctx.canvas.width-30,this.ctx.canvas.height/2 - 30);
     this.rectanguloIzq= new Rectangulo(this.ctx,10,this.ctx.canvas.height/2 - 30);
 
-
-    
 
     this._setListeners();
 
@@ -38,21 +35,26 @@ class Game {
         return
       }
 
-
+      
       this._clear()
+      this.gameOver();
+      start.disabled = false
       this._draw()
       this._moveRectangulos()
+      
 
       if (newRound === true) {
         this.startNewRound()
-        
         return
       }
 
+      
       this._move()
       this._checkCollisions();
+      
     
     }, 1000 / 60)
+    
   }
 
 
@@ -62,20 +64,23 @@ class Game {
 
   _draw() {
     this.ctx.font = "30px Arial";
-    this.ctx.fillStyle = "black";
+    this.ctx.fillStyle = "white";
     this.ctx.fillText(this.scoreRight, this.ctx.canvas.width/2-50, 50);
     this.ctx.fillText(this.scoreLeft, this.ctx.canvas.width/2+50, 50);
+    
+    this.ctx.fillStyle = "white"
+    
     this.bg.draw();
     this.pelota.draw();
     this.rectanguloDer.draw();
+    this.fillStyle = "green"
     this.rectanguloIzq.draw();
 
   }
   
 
   _move() { 
-    this.pelota.move()  //setTimeout(() => {this.pelota.move()}, 2000) ---->para poner retardo en el inicio de la pelota (pero choca con pause)
-    //console.log("yooou")
+    this.pelota.move()
   }
 
   _moveRectangulos () {
@@ -85,10 +90,10 @@ class Game {
 
   _checkCollisions() {
     
-    if(this.pelota.collide(this.rectanguloDer || this.rectanguloDer + 40)){
+    if(this.pelota.collide(this.rectanguloDer || this.rectanguloDer + 500)){ //--------->PARA LA ACELARACION
       this.pelota.cambiarDireccionX(-5);
       this.pelota.aumentarVelocidad(-3)
-    }else if(this.pelota.collide(this.rectanguloIzq || this.rectanguloIzq - 40)){
+    }else if(this.pelota.collide(this.rectanguloIzq || this.rectanguloIzq - 500)){ //-----------> PARA LA ACELARACION
       this.pelota.cambiarDireccionX(5);
       this.pelota.aumentarVelocidad(3)
     }
@@ -121,10 +126,45 @@ class Game {
   }
 
   printPause () {
+    this.ctx.font = "40px Arial";
+    this.ctx.fillStyle = "red";
+    this.ctx.textAlign = "center"
+    this.ctx.fillText("- PAUSE -", this.ctx.canvas.width/2, this.ctx.canvas.height/2);
+  }
+
+  /*printMatchPoint() {
     this.ctx.font = "30px Arial";
     this.ctx.fillStyle = "black";
     this.ctx.textAlign = "center"
-    this.ctx.fillText("PAUSE", this.ctx.canvas.width/2, this.ctx.canvas.height/2 );
+    this.ctx.fillText("MATCH POINT", this.ctx.canvas.width/2, this.ctx.canvas.height/2 );
+  }*/
+
+  printRightPlayerWins () {
+    this.ctx.font = "30px Arial";
+    this.ctx.fillStyle = "yellow";
+    this.ctx.textAlign = "center"
+    this.ctx.fillText("RIGHT PLAYER WINS", this.ctx.canvas.width/1.35, this.ctx.canvas.height/2+10);
+  }
+
+  printLeftPlayerWins () {
+    this.ctx.font = "30px Arial";
+    this.ctx.fillStyle = "yellow";
+    this.ctx.textAlign = "center"
+    this.ctx.fillText("LEFT PLAYER WINS", this.ctx.canvas.width/4, this.ctx.canvas.height/2-10);
+  }
+
+  gameOver() {
+    //if scoreLeft or ScoreRight === 11-------->start.disabled = false; innerHTML del boton = restart
+    if (this.scoreLeft >= 11 && this.scoreLeft - this.scoreRight > 1) {
+      clearInterval(this.intervalId);
+      this.printRightPlayerWins()
+      
+    } else if (this.scoreRight >= 11 && this.scoreRight - this.scoreLeft > 1) {
+      clearInterval(this.intervalId);
+      this.printLeftPlayerWins();
+      
+    
+    }
   }
 
   startNewRound () {
@@ -134,17 +174,21 @@ class Game {
   _setListeners() {
     document.onkeydown = (e) => {
       if (e.keyCode === TOP_KEY) {
-        //this.vy = -5
-        this.rectanguloDer.aumentarVelocidad(-5);
+        
+        this.rectanguloDer.aumentarVelocidad(-6);
+
       } else if (e.keyCode === DOWN_KEY) {
-        //this.vy = 5
-        this.rectanguloDer.aumentarVelocidad(5);
+        
+        this.rectanguloDer.aumentarVelocidad(6);
+
       } else if (e.keyCode === W_KEY) {
-        //this.vy = 5
-        this.rectanguloIzq.aumentarVelocidad(-5);
+        
+        this.rectanguloIzq.aumentarVelocidad(-6);
+
       } else if (e.keyCode === S_KEY) {
-        //this.vy = 5
-        this.rectanguloIzq.aumentarVelocidad(5);
+        
+        this.rectanguloIzq.aumentarVelocidad(6);
+
       } else if (e.keyCode===PAUSA) {
         pause = !pause
       }

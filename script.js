@@ -8,3 +8,4 @@ start.onclick = () => {
     game.run()
     start.disabled = true
 }
+
