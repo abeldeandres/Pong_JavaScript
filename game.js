@@ -7,6 +7,9 @@ const PAUSA = 32;
 
 let pause = false
 
+let newRound = false
+
+
 class Game {
   constructor(ctx) {
     this.ctx = ctx;
@@ -15,37 +18,42 @@ class Game {
     this.pelota = new Pelota(this.ctx);
     this.rectanguloDer= new Rectangulo(this.ctx,this.ctx.canvas.width-30,this.ctx.canvas.height/2 - 30);
     this.rectanguloIzq= new Rectangulo(this.ctx,10,this.ctx.canvas.height/2 - 30);
-    this.intervalId = null;
+
 
     
 
     this._setListeners();
 
-    this.scoreLeft=0;
-    this.scoreRight=0;
+    this.scoreLeft = 0
+    this.scoreRight = 0
 
-    //this.tick = 0;
   }
 
   run() {
    
-
     this.intervalId = setInterval(() => {
+
       if (pause === true) {
         this.printPause()
         return
       }
+
+
       this._clear()
       this._draw()
-      this._move()
-      this._checkCollisions();
-      if (pause === true) {
-        this.printPause()
+      this._moveRectangulos()
+
+      if (newRound === true) {
+        this.startNewRound()
+        
         return
       }
+
+      this._move()
+      this._checkCollisions();
+    
     }, 1000 / 60)
   }
-
 
 
   _clear() {
@@ -63,22 +71,26 @@ class Game {
     this.rectanguloIzq.draw();
 
   }
-
+  
 
   _move() { 
     this.pelota.move()  //setTimeout(() => {this.pelota.move()}, 2000) ---->para poner retardo en el inicio de la pelota (pero choca con pause)
     //console.log("yooou")
+  }
+
+  _moveRectangulos () {
     this.rectanguloDer.move();
     this.rectanguloIzq.move();
-
   }
 
   _checkCollisions() {
     
-    if(this.pelota.collide(this.rectanguloDer)){
+    if(this.pelota.collide(this.rectanguloDer || this.rectanguloDer + 40)){
       this.pelota.cambiarDireccionX(-5);
-    }else if(this.pelota.collide(this.rectanguloIzq)){
+      this.pelota.aumentarVelocidad(-3)
+    }else if(this.pelota.collide(this.rectanguloIzq || this.rectanguloIzq - 40)){
       this.pelota.cambiarDireccionX(5);
+      this.pelota.aumentarVelocidad(3)
     }
 
     if(this.pelota.collideTop()) {
@@ -90,19 +102,21 @@ class Game {
     }
 
     if(this.pelota.collideRight()){
-      this.scoreLeft++;
-      //AQUI ESTARIA BIEN METER UN SETTIMEOUT
-       //clearInterval(this.intervalId)
-       //clearTimeout(setTimeout(() => {this.pelota.move()}, 2000))
-       this.pelota = new Pelota(this.ctx);
+      this.scoreLeft++
+      this.pelota = new Pelota(this.ctx);
+      newRound = true
+      setTimeout(() => {
+        newRound = false
+      }, 700)
     }
 
     if(this.pelota.collideLeft()){
-      this.scoreRight++;
-      //AQUI ESTARIA BIEN METER UN SETTIMEOUT
-      //clearInterval(this.intervalId)
-      //clearTimeout(setTimeout(() => {this.pelota.move()}, 2000))
+      this.scoreRight++
       this.pelota = new Pelota(this.ctx);
+      newRound = true
+      setTimeout(() => {
+        newRound = false
+      }, 700)
     }
   }
 
@@ -113,22 +127,25 @@ class Game {
     this.ctx.fillText("PAUSE", this.ctx.canvas.width/2, this.ctx.canvas.height/2 );
   }
 
+  startNewRound () {
+    this.pelota = new Pelota(this.ctx)
+  }
+
   _setListeners() {
     document.onkeydown = (e) => {
       if (e.keyCode === TOP_KEY) {
         //this.vy = -5
-        this.rectanguloDer.aumentarVelocidad(-3);
+        this.rectanguloDer.aumentarVelocidad(-5);
       } else if (e.keyCode === DOWN_KEY) {
         //this.vy = 5
-        this.rectanguloDer.aumentarVelocidad(3);
+        this.rectanguloDer.aumentarVelocidad(5);
       } else if (e.keyCode === W_KEY) {
         //this.vy = 5
-        this.rectanguloIzq.aumentarVelocidad(-3);
+        this.rectanguloIzq.aumentarVelocidad(-5);
       } else if (e.keyCode === S_KEY) {
         //this.vy = 5
-        this.rectanguloIzq.aumentarVelocidad(3);
+        this.rectanguloIzq.aumentarVelocidad(5);
       } else if (e.keyCode===PAUSA) {
-        console.log(pause)
         pause = !pause
       }
     }
