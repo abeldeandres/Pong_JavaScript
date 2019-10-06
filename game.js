@@ -38,7 +38,7 @@ class Game {
       
       this._clear()
       this.gameOver();
-      start.disabled = false
+      //start.disabled = false
       this._draw()
       this._moveRectangulos()
       
@@ -158,19 +158,31 @@ class Game {
   }
 
   gameOver() {
+    let boton = document.getElementById("btn")
     //if scoreLeft or ScoreRight === 11-------->start.disabled = false; innerHTML del boton = restart
     if (this.scoreLeft >= 11 && this.scoreLeft - this.scoreRight > 1) {
       clearInterval(this.intervalId);
       this.printRightPlayerWins()
+      boton.innerHTML = "Replay"
+      boton.disabled = false
       
     } else if (this.scoreRight >= 11 && this.scoreRight - this.scoreLeft > 1) {
       clearInterval(this.intervalId);
       this.printLeftPlayerWins();
+      boton.innerHTML = "Replay"
+      boton.disabled = false
     }
+
+    //boton.disabled = false
   }
 
   startNewRound () {
     this.pelota = new Pelota(this.ctx)
+  }
+
+  puntuacionCero() {
+    this.scoreLeft = 0
+    this.scoreRight = 0
   }
 
   _setListeners() {

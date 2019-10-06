@@ -82,12 +82,12 @@ class Pelota {
 
   golpeoPalaSecciones (el) {
     if (el.y < this.y && this.y < el.y + 29) {
-      debugger;
+    
       if (this.vy >= 0) {
         this.vy *= -1
       }
     } else if (el.y + 30 < this.y && this.y < el.y + 60) {
-        debugger;
+        
         if (this.vy <= 0) {
         this.vy *= -1
         }
